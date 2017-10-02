@@ -3,8 +3,8 @@ var action = ds_map_find_value(accountID, "action");
 switch(argument1){
  case initialize:
   if(action == noone)
-   messageSingle(accountID, "You are idle.");
+   function("messageSingle", accountID, "You are idle.", false);
   else
-   messageSingle(accountID, script_execute(action, accountID, queary));
+   function("messageSingle", accountID, script_execute(action, accountID, queary), false);
   break;
 }

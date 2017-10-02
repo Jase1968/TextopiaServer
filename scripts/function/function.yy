@@ -1,8 +1,8 @@
 {
-    "id": "e261ed2e-392b-491b-864a-abf90fa4aef8",
+    "id": "51b5f25d-9a3c-4498-936b-1f68bf2d446e",
     "modelName": "GMScript",
     "mvc": "1.0",
-    "name": "messageSingle",
+    "name": "function",
     "IsCompatibility": false,
     "IsDnD": false
 }

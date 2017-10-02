@@ -13,31 +13,31 @@ switch(timer){
   return "You are cooking spaghetti.";
   break;
  case 30:
-  messageSingle(accountID, name + " is getting out the required ingredients.");
+  function("messageSingle", accountID, name + " is getting out the required ingredients.", false);
   break;
  case 28:
-  messageSingle(accountID, name + " is heating up a pot of water.");
+  function("messageSingle", accountID, name + " is heating up a pot of water.", false);
   break;
  case 27:
-  messageSingle(accountID, name + " is heating up a pan of hamburger.");
+  function("messageSingle", accountID, name + " is heating up a pan of hamburger.", false);
   break;
  case 24:
-  messageSingle(accountID, name + " is adding a handfull of spaghetti noodles and a pinch of salt to the boiling water.");
+  function("messageSingle", accountID, name + " is adding a handfull of spaghetti noodles and a pinch of salt to the boiling water.", false);
   break;
  case 20:
-  messageSingle(accountID, name + " is draining the hamburger grease.");
+  function("messageSingle", accountID, name + " is draining the hamburger grease.", false);
   break;
  case 19:
-  messageSingle(accountID, name + " is adding tomato sauce and seasoning to the hanburger.");
+  function("messageSingle", accountID, name + " is adding tomato sauce and seasoning to the hanburger.", false);
   break;
  case 10:
-  messageSingle(accountID, name + " is straining the pasta.");
+  function("messageSingle", accountID, name + " is straining the pasta.", false);
   break;
  case 8:
-  messageSingle(accountID, name + " is combining the sauce with the noodles.");
+  function("messageSingle", accountID, name + " is combining the sauce with the noodles.", false);
   break;
  case 7:
-  messageSingle(accountID, name + " is cleaning up the kitchen.");
+  function("messageSingle", accountID, name + " is cleaning up the kitchen.", false);
   break;
  default:
   return false;

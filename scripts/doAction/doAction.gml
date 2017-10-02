@@ -9,7 +9,7 @@ var tryCommands = ds_list_create();
 var key = ds_map_find_first(commands);
 var comp;
 for(var k = 0; k < ds_map_size(commands); k++){
- comp = compSentence(key, input);
+ comp = function("compSentence",key, input, false);
  if(comp > closestCommand){
   doCommand = ds_map_find_value(commands, key);
   closestCommand = comp;
@@ -19,9 +19,9 @@ for(var k = 0; k < ds_map_size(commands); k++){
 }
 
 if(doCommand == noone){
- messageSingle(accountID, "Unrecognized.");
+ function("messageSingle", accountID, "Unrecognized.", false);
  for(var k = 0; k < ds_list_size(tryCommands); k++)
-  messageSingle(accountID, "Try /" + ds_list_find_value(tryCommands, k));
+  function("messageSingle", accountID, "Try /" + ds_list_find_value(tryCommands, k), false);
 }else{
  script_execute(doCommand, accountID, initialize);
 }

@@ -2,6 +2,6 @@ var accountID = argument0;
 
 switch(argument1){
  case initialize:
-  messageSingle(accountID, getTime(time));
+  function("messageSingle", accountID, function("getTime", time, false, false), false);
   break;
 }

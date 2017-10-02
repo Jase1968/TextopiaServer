@@ -1,6 +1,6 @@
 /// Destroy Vars
 
-saveAccounts();
+function("saveAccounts", false, false, false);
 
 ds_list_destroy(onlineAccounts);
 

@@ -15,10 +15,10 @@ switch(timer){
   return "You are eating.";
   break;
  case 30:
-  messageSingle(accountID, name + " is making a sandwich.");
+  function("messageSingle", accountID, name + " is making a sandwich.", false);
   break;
  case 20:
-  messageSingle(accountID, name + " is eating a sandwich.");
+  function("messageSingle", accountID, name + " is eating a sandwich.", false);
   break;
  default:
   return false;

@@ -34,10 +34,10 @@ if(eventID==server){
    var buffer = buffer_create(1024, buffer_grow, 1);
    buffer_write(buffer, buffer_u8, register);
    var name = buffer_read(rbuffer, buffer_string);
-   if(searchList(accounts, "name", name) == noone){
+   if(function("searchList", accounts, "name", name) == noone){
     buffer_write(buffer, buffer_bool, true);
     var accountID = ds_map_create();
-	createAccount(accountID, name, buffer_read(rbuffer, buffer_string));
+	function("createAccount", accountID, name, buffer_read(rbuffer, buffer_string));
     //ds_map_add(clientID, "accountID", accountID);
     //ds_map_replace(accountID, "online", true);
 	ds_map_replace(accountID, "socket", eventID);
@@ -53,7 +53,7 @@ if(eventID==server){
   case login:
    buffer = buffer_create(1024, buffer_grow, 1);
    buffer_write(buffer, buffer_u8, login);
-   var accountID = searchList(accounts, "name", buffer_read(rbuffer, buffer_string));
+   var accountID = function("searchList", accounts, "name", buffer_read(rbuffer, buffer_string));
    if(accountID == noone)
     buffer_write(buffer, buffer_u8, false); //no username
    else{
@@ -71,10 +71,10 @@ if(eventID==server){
    
   case chat:
    //show_message_async("Recieved message");
-   var accountID = searchList(accounts, "socket", eventID);
+   var accountID = function("searchList", accounts, "socket", eventID);
    var name = ds_map_find_value(accountID, "name");
    var message = buffer_read(rbuffer, buffer_string);
-   messageAll(name + ": " + message);
+   function("messageAll", name + ": " + message, false, false);
    if(string_char_at(message, 1) == "/"){
     doAction(accountID, string_copy(message, 2, string_length(message)));
    }
