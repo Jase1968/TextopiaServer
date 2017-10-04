@@ -90,6 +90,7 @@ case "messageSingle":
 var buffer = buffer_create(1024, buffer_grow, 1);
 buffer_write(buffer, buffer_u8, chat);
 buffer_write(buffer, buffer_string, argument2);
+buffer_write(buffer, buffer_u32, argument3);
 
 network_send_packet(ds_map_find_value(argument1, "socket"), buffer, buffer_tell(buffer));
  
@@ -100,6 +101,7 @@ case "messageAll":
 var buffer = buffer_create(1024, buffer_grow, 1);
 buffer_write(buffer, buffer_u8, chat);
 buffer_write(buffer, buffer_string, argument1);
+buffer_write(buffer, buffer_u32, argument2);
 
 for(var a = 0; a < ds_list_size(onlineAccounts); a++){
  var accountID = ds_list_find_value(onlineAccounts, a);
@@ -115,7 +117,9 @@ var accountID = argument1;
 ds_map_add(accountID, "name", argument2);
 ds_map_add(accountID, "password", argument3);
 ds_map_add(accountID, "socket", noone);
-ds_map_add(accountID, "action", noone);
+ds_map_add(accountID, "action", "none");
+ds_map_add(accountID, "response", noone);
+ds_map_add(accountID, "color", c_white);
 ds_map_add(accountID, "timer", -1);
 ds_map_add(accountID, "hunger", 100);
 break;
@@ -130,6 +134,9 @@ for(var a = 0; a < ds_list_size(obj_server.accounts); a++){
  var name = ds_map_find_value(accountID, "name");
  ini_write_string("AccountNames", string(a), name);
  ini_write_string(name, "password", ds_map_find_value(accountID, "password"));
+ ini_write_string(name, "action", ds_map_find_value(accountID, "action"));
+ ini_write_real(name, "timer", ds_map_find_value(accountID, "timer"));
+ ini_write_real(name, "hunger", ds_map_find_value(accountID, "hunger"));
 }
 
 ini_close();
@@ -146,7 +153,11 @@ for(var a = 0; a < numAccounts; a++){
  ds_map_add(accountID, "name", name);
  ds_map_add(accountID, "password", ini_read_string(name, "password", ""));
  ds_map_add(accountID, "socket", noone);
- ds_map_add(accountID, "action", ini_read_real(name, "action", noone));
+ ds_map_add(accountID, "action", ini_read_string(name, "action", "none"));
+ ds_map_add(accountID, "response", noone);
+ ds_map_add(accountID, "color", c_white);
+ ds_map_add(accountID, "timer", ini_read_real(name, "timer", -1));
+ ds_map_add(accountID, "hunger", ini_read_real(name, "hunger", 100));
  ds_list_add(accounts, accountID);
 }
 

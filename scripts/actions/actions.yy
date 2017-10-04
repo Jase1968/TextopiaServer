@@ -1,8 +1,8 @@
 {
-    "id": "19471165-ae67-4e18-b6cc-c9ab9ea52701",
+    "id": "1f770132-aabf-4079-a0eb-9db96420d8d9",
     "modelName": "GMScript",
     "mvc": "1.0",
-    "name": "act_time",
+    "name": "actions",
     "IsCompatibility": false,
     "IsDnD": false
 }

@@ -19,11 +19,11 @@ for(var k = 0; k < ds_map_size(commands); k++){
 }
 
 if(doCommand == noone){
- function("messageSingle", accountID, "Unrecognized.", false);
+ function("messageSingle", accountID, "Unrecognized.", c_yellow);
  for(var k = 0; k < ds_list_size(tryCommands); k++)
-  function("messageSingle", accountID, "Try /" + ds_list_find_value(tryCommands, k), false);
+  function("messageSingle", accountID, "Try /" + ds_list_find_value(tryCommands, k), c_yellow);
 }else{
- script_execute(doCommand, accountID, initialize);
+ actions(doCommand, accountID, initialize);
 }
 
 ds_list_destroy(tryCommands);

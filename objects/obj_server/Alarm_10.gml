@@ -13,7 +13,7 @@ if(time % 60 == 0){
   					  buffer, buffer_tell(buffer));
  }
  buffer_delete(buffer);
- function("messageAll", function("getTime", time, false, false), false, false);
+ function("messageAll", function("getTime", time, false, false), c_white, false);
 }
 
 updateAction();
