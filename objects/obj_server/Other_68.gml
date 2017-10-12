@@ -19,9 +19,11 @@ if(eventID==server){
    
   case network_type_disconnect:
    var accountID = function("searchList", onlineAccounts, "socket", clientSocket);
-   ds_map_replace(accountID, "socket", noone);
-   ds_list_delete(onlineAccounts, ds_list_find_index(onlineAccounts, accountID));
-   function("saveAccounts", false, false, false);
+   if(accountID != noone){
+    ds_map_replace(accountID, "socket", noone);
+    ds_list_delete(onlineAccounts, ds_list_find_index(onlineAccounts, accountID));
+    function("saveAccounts", false, false, false);
+   }
  }
 }else{
 
@@ -73,16 +75,23 @@ if(eventID==server){
    }
    network_send_packet(eventID, buffer, buffer_tell(buffer));
    buffer_delete(buffer);
-   if(successfulLogin)
-    actions("act_chooseColor", accountID, initialize);
+   if(successfulLogin){
+    var buffer = buffer_create(1024, buffer_grow, 1);
+    buffer_write(buffer, buffer_u8, colorChange);
+    buffer_write(buffer, buffer_u32, ds_map_find_value(accountID, "color"));
+    network_send_packet(ds_map_find_value(accountID, "socket"),
+  					  buffer, buffer_tell(buffer));
+    buffer_delete(buffer);
+   }
+   //if(successfulLogin)
+   // actions("act_chooseColor", accountID, initialize);
    break;
    
   case chat:
-   //show_message_async("Recieved message");
    var accountID = function("searchList", accounts, "socket", eventID);
    var name = ds_map_find_value(accountID, "name");
    var message = buffer_read(rbuffer, buffer_string);
-   function("messageAll", name + ": " + message, ds_map_find_value(accountID, "color"), false);
+   function("messageAll", name + ">" + message, ds_map_find_value(accountID, "color"), false);
    if(string_char_at(message, 1) == "/"){
     doAction(accountID, string_copy(message, 2, string_length(message)));
    }
