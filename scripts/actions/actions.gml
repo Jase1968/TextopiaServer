@@ -19,12 +19,33 @@ case "act_lookAround":
  }
 break;
 
+case "act_addFriend":
+ function("messageSingle", accountID, "Who do you want to add? Enter '/friendName'", c_yellow);
+ ds_map_replace(accountID, "response", "addFriend");
+break;
+
 case "act_time":
 switch(timer){
  case initialize:
   function("messageSingle", accountID, function("getTime", time, false, false), c_white);
   break;
 }
+break;
+
+case "act_readMail":
+ var mail = ds_map_find_value(accountID, "mail");
+ for(var m = 0; m < ds_list_size(mail); m++){
+  var mailSplit = function("split", ds_list_find_value(mail, m), ";", false);
+  var message = "";
+  for(var s = 3; s <= mailSplit[0]; s++)
+   message += mailSplit[s];
+   var mailColor;
+   if(mailSplit[1] == "new") mailColor = c_white;
+   else mailColor = c_gray;
+  function("messageSingle", accountID, string(m + 1) + ") " + mailSplit[2] + ">" + message, c_white);
+ }
+ function("messageSingle", accountID, "Do you want to /reply, /delete, or /close?", c_yellow);
+ ds_map_replace(accountID, "response", "checkMail");
 break;
 
 case "act_goToPark":

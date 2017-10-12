@@ -137,6 +137,25 @@ for(var a = 0; a < ds_list_size(onlineAccounts); a++){
 buffer_delete(buffer);
 break;
 
+case "sendLetter":
+ var sender = argument1;
+ var recipient = argument2;
+ var message = argument3;
+ ds_list_add(ds_map_find_value(recipient, "mail"), "new;" + ds_map_find_value(sender, "name") + ";" + message);
+ if(ds_map_find_value(recipient, "socket") != noone){
+  function("messageSingle", recipient, "You've got mail!", c_yellow);
+ }
+break;
+
+case "hasNewMail":
+ var accountID = argument1;
+ var mail = ds_map_find_value(accountID, "mail");
+ for(var m = 0; m < ds_list_size(mail); m++){
+  if(string_copy(ds_list_find_value(mail, m), 0, 3) == "new")
+   return true;
+ }
+return false;
+
 //void adds variables to a newly created account
 case "createAccount":
 var accountID = argument1;
@@ -145,6 +164,7 @@ ds_map_add(accountID, "password", argument3);
 ds_map_add(accountID, "socket", noone);
 ds_map_add(accountID, "location", "house");
 ds_map_add(accountID, "sublocation", argument2);
+ds_map_add(accountID, "mail", ds_list_create());
 //ds_map_add(accountID, "address", (100 + ds_list_size(accounts)) + " Main Street");
 ds_map_add(accountID, "action", "none");
 ds_map_add(accountID, "response", noone);
@@ -171,6 +191,7 @@ for(var a = 0; a < ds_list_size(obj_server.accounts); a++){
  ini_write_string(name, "action", ds_map_find_value(accountID, "action"));
  ini_write_real(name, "timer", ds_map_find_value(accountID, "timer"));
  ini_write_real(name, "hunger", ds_map_find_value(accountID, "hunger"));
+ ini_write_string(name, "mail", ds_list_write(ds_map_find_value(accountID, "mail")));
 }
 
 ini_close();
@@ -196,6 +217,11 @@ for(var a = 0; a < numAccounts; a++){
  ds_map_add(accountID, "color", ini_read_real(name, "color", c_white));
  ds_map_add(accountID, "timer", ini_read_real(name, "timer", -1));
  ds_map_add(accountID, "hunger", ini_read_real(name, "hunger", 100));
+ var mail = ds_list_create();
+ ds_map_add(accountID, "mail", mail);
+ var mailString = ini_read_string(name, "mail", "");
+ if(mailString != "")
+  ds_list_read(mail, mailString);
  ds_list_add(accounts, accountID);
 }
 

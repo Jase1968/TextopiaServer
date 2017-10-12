@@ -82,6 +82,9 @@ if(eventID==server){
     network_send_packet(ds_map_find_value(accountID, "socket"),
   					  buffer, buffer_tell(buffer));
     buffer_delete(buffer);
+	if(function("hasNewMail", accountID, false, false)){
+	 function("messageSingle", accountID, "You've got mail!", c_yellow);
+	}
    }
    //if(successfulLogin)
    // actions("act_chooseColor", accountID, initialize);

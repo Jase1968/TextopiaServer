@@ -32,5 +32,8 @@ if(doCommand == noone){
 
 ds_list_destroy(tryCommands);
 }else{
- respond(response, accountID, input);
+ if(string_lower(input) == "cancel")
+  ds_map_replace(accountID, "response", noone)
+ else
+  respond(response, accountID, input);
 }
