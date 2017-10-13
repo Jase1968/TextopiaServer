@@ -28,12 +28,6 @@ switch(argument0){ //the response type
   }
  break;
  
- case "confirmFriendRequest":
-  if(string_lower(input) == "yes"){
-   //add to friends list
-  }
- break;
- 
  case "checkMail":
   if(input == "reply"){
    function("messageSingle", accountID, "Which message do you want to reply to? Enter /number.", c_yellow);
@@ -44,7 +38,18 @@ switch(argument0){ //the response type
   }else if(input == "close"){
    ds_map_replace(accountID, "response", noone);
   }else
-   function("messageSingle", accountID, "That is not an option now. Enter /reply, /delete, or /close.", c_yellow);
+   function("messageSingle", accountID, "That is not an option now. Enter /reply /delete or /close.", c_yellow);
+ break;
+ 
+ case "sendMailTo":
+  var otherID = function("searchList", accounts, "name", input);
+  if(otherID == noone){
+   function("messageSingle", accountID, "There is noone with that name.", c_yellow);
+   ds_map_replace(accountID, "response", noone);
+  }else{
+   function("messageSingle", accountID, "Write /message to " + input + " or /cancel.", c_yellow);
+   ds_map_replace(accountID, "response", "writeMail;" + input);
+  }
  break;
  
  case "replyMail":
@@ -57,13 +62,79 @@ switch(argument0){ //the response type
 	message += mailSplit[s];
    }
    if(message == "Want to be friends?"){
-    function("messageSingle", accountID, "Reply /Yes or /No. You can never have too many friends!", c_yellow);
-	ds_map_replace(accountID, "response", "confirmFriendRequest");
+    function("messageSingle", accountID, "Do you want to be friends with " + mailSplit[2] + "? Reply /Yes /No or /Cancel. You can never have too many friends!", c_yellow);
+	ds_map_replace(accountID, "response", "confirmFriendRequest;" + mailSplit[2]);
    }else{
-	function("messageSingle", accountID, "Write reply to " + mailSplit[2], c_yellow);
-	ds_map_replace(accountID, "response", "writeReplyMail");
+	function("messageSingle", accountID, "Write /reply to " + mailSplit[2] + " or /cancel.", c_yellow);
+	ds_map_replace(accountID, "response", "writeReplyMail;" + mailSplit[2]);
    }
   }else{
-   function("messageSingle", accountID, "Enter a number between 1 and " + ds_list_size(mail) + " or /cancel", c_yellow);
+   if(ds_list_size(mail) == 1)
+    function("messageSingle", accountID, "Enter /1 or /cancel", c_yellow);  
+   else
+    function("messageSingle", accountID, "Enter a number between /1 and /" + string(ds_list_size(mail)) + " or /cancel", c_yellow);
   }
+  break;
+  
+ case "deleteMail":
+  var mail = ds_map_find_value(accountID, "mail");
+  var mailNumber = real(input);
+  if(string(mailNumber) == input && mailNumber > 0 && mailNumber <= ds_list_size(mail)){
+   ds_list_delete(mail, mailNumber - 1);
+   function("messageSingle", accountID, "Message deleted!", c_yellow);
+   ds_map_replace(accountID, "response", noone);
+  }else{
+   if(ds_list_size(mail) == 1)
+    function("messageSingle", accountID, "Enter /1 or /cancel", c_yellow);  
+   else
+    function("messageSingle", accountID, "Enter a number between /1 and /" + string(ds_list_size(mail)) + " or /cancel", c_yellow);  
+  }
+ break;
+ 
+ default:
+  var responseSplit = function("split", argument0, ";", false);
+  var otherID = function("searchList", accounts, "name", responseSplit[2]);
+  if(otherID == noone){
+   function("messageSingle", accountID, "That person no longer exists.", c_yellow);
+   ds_map_replace(accountID, "response", noone);
+  }
+  if(responseSplit[1] == "confirmFriendRequest"){
+   if(string_lower(input) == "yes"){
+    var friendsList = ds_map_find_value(accountID, "friendsList");
+	if(ds_list_find_index(friendsList, ds_map_find_value(otherID, "name")) == -1)
+	 ds_list_add(friendsList, ds_map_find_value(otherID, "name"));
+	friendsList = ds_map_find_value(otherID, "friendsList");
+	if(ds_list_find_index(friendsList, ds_map_find_value(accountID, "name")) == -1)
+	 ds_list_add(friendsList, ds_map_find_value(accountID, "name"));
+	var mail = ds_map_find_value(accountID, "mail");
+    for(var m = 0; m < ds_list_size(mail); m++){
+     var mailSplit = function("split", ds_list_find_value(mail, m), ";", false);
+	 if(mailSplit[2] == responseSplit[2] && mailSplit[3] == "Want to be friends?"){
+	  ds_list_delete(mail, m);
+	 }
+    }
+    function("messageSingle", accountID, ds_map_find_value(otherID, "name") + " is now your friend.", c_yellow);
+    function("messageSingle", otherID, ds_map_find_value(accountID, "name") + " accepted your friend request.", c_yellow);
+    ds_map_replace(accountID, "response", noone);
+   }else if(string_lower(input) == "no"){
+	var mail = ds_map_find_value(accountID, "mail");
+   for(var m = 0; m < ds_list_size(mail); m++){
+    var mailSplit = function("split", ds_list_find_value(mail, m), ";", false);
+	if(mailSplit[2] == responseSplit[2] && mailSplit[3] == "Want to be friends?"){
+	 ds_list_delete(mail, m);
+	}
+   }
+   function("messageSingle", accountID, "Friend request deleted.", c_yellow);
+   ds_map_replace(accountID, "response", noone);
+   }	  
+  }else if(responseSplit[1] == "writeMail"){
+   function("sendLetter", accountID, otherID, input);
+   function("messageSingle", accountID, "Message sent via mail!", c_yellow);
+   ds_map_replace(accountID, "response", noone);
+  }else if(responseSplit[1] == "writeReplyMail"){
+   function("sendLetter", accountID, otherID, input);
+   ds_map_replace(accountID, "response", noone);
+   function("messageSingle", accountID, "Message sent via mail!", c_yellow);
+  }
+ break;
 }

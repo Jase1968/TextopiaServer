@@ -32,20 +32,41 @@ switch(timer){
 }
 break;
 
+case "act_viewFriends":
+ var friendsList = ds_map_find_value(accountID, "friendsList");
+ if(ds_list_size(friendsList) == 0)
+  function("messageSingle", accountID, "You don't have any friends yet.", c_yellow);
+ else
+  function("messageSingle", accountID, "These are your friends:", c_yellow);
+ for(var f = 0; f < ds_list_size(friendsList); f++){
+  function("messageSingle", accountID, ds_list_find_value(friendsList, f), c_white);
+ }
+break;
+
+case "act_sendMessage":
+  function("messageSingle", accountID, "Who do you want to write to? Enter /name.", c_yellow);
+  ds_map_replace(accountID, "response", "sendMailTo");
+break;
+
 case "act_readMail":
  var mail = ds_map_find_value(accountID, "mail");
+ if(ds_list_size(mail) > 0){
  for(var m = 0; m < ds_list_size(mail); m++){
   var mailSplit = function("split", ds_list_find_value(mail, m), ";", false);
   var message = "";
   for(var s = 3; s <= mailSplit[0]; s++)
    message += mailSplit[s];
-   var mailColor;
-   if(mailSplit[1] == "new") mailColor = c_white;
-   else mailColor = c_gray;
-  function("messageSingle", accountID, string(m + 1) + ") " + mailSplit[2] + ">" + message, c_white);
+  var mailColor;
+  if(mailSplit[1] == "new") mailColor = c_white;
+  else mailColor = c_gray;
+  function("messageSingle", accountID, string(m + 1) + ")" + mailSplit[2] + ">" + message, mailColor);
+  ds_list_replace(mail, m, "old;" + mailSplit[2] + ";" + message);
  }
- function("messageSingle", accountID, "Do you want to /reply, /delete, or /close?", c_yellow);
+ function("messageSingle", accountID, "Do you want to /reply /delete or /close?", c_yellow);
  ds_map_replace(accountID, "response", "checkMail");
+ }else{
+  function("messageSingle", accountID, "You have no mail.", c_yellow);
+ }
 break;
 
 case "act_goToPark":

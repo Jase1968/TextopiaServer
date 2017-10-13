@@ -165,6 +165,7 @@ ds_map_add(accountID, "socket", noone);
 ds_map_add(accountID, "location", "house");
 ds_map_add(accountID, "sublocation", argument2);
 ds_map_add(accountID, "mail", ds_list_create());
+ds_map_add(accountID, "friendsList", ds_list_create());
 //ds_map_add(accountID, "address", (100 + ds_list_size(accounts)) + " Main Street");
 ds_map_add(accountID, "action", "none");
 ds_map_add(accountID, "response", noone);
@@ -192,6 +193,7 @@ for(var a = 0; a < ds_list_size(obj_server.accounts); a++){
  ini_write_real(name, "timer", ds_map_find_value(accountID, "timer"));
  ini_write_real(name, "hunger", ds_map_find_value(accountID, "hunger"));
  ini_write_string(name, "mail", ds_list_write(ds_map_find_value(accountID, "mail")));
+ ini_write_string(name, "friendsList", ds_list_write(ds_map_find_value(accountID, "friendsList")));
 }
 
 ini_close();
@@ -222,6 +224,17 @@ for(var a = 0; a < numAccounts; a++){
  var mailString = ini_read_string(name, "mail", "");
  if(mailString != "")
   ds_list_read(mail, mailString);
+ var friendsList = ds_list_create();
+ ds_map_add(accountID, "friendsList", friendsList);
+ var friendsString = ini_read_string(name, "friendsList", "");
+ if(friendsString != "")
+  ds_list_read(friendsList, friendsString);
+ for(var f = 0; f < ds_list_size(friendsList); f++){
+  for(var n = f + 1; n < ds_list_size(friendsList); n++){
+   if(ds_list_find_value(friendsList, n) == ds_list_find_value(friendsList, f))
+    ds_list_delete(friendsList, n);
+  }
+ }
  ds_list_add(accounts, accountID);
 }
 

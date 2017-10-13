@@ -1,5 +1,7 @@
 /// Destroy Vars
 
+function("messageAll", "Server down.", c_red, false);
+
 function("saveAccounts", false, false, false);
 
 ds_list_destroy(onlineAccounts);

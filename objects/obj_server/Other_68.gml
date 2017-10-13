@@ -21,6 +21,7 @@ if(eventID==server){
    var accountID = function("searchList", onlineAccounts, "socket", clientSocket);
    if(accountID != noone){
     ds_map_replace(accountID, "socket", noone);
+    ds_map_replace(accountID, "response", noone);
     ds_list_delete(onlineAccounts, ds_list_find_index(onlineAccounts, accountID));
     function("saveAccounts", false, false, false);
    }
@@ -67,6 +68,12 @@ if(eventID==server){
    else{
     if(ds_map_find_value(accountID, "password") == buffer_read(rbuffer, buffer_string)){
 	 successfulLogin = true;
+	 var onlineAccountID = ds_list_find_index(onlineAccounts, accountID);
+	 if(onlineAccountID != -1){
+      ds_map_replace(accountID, "response", noone);
+	  function("messageSingle", accountID, "You have logged in on another computer. Please /logout or /exit.", c_red);
+      ds_list_delete(onlineAccounts, ds_list_find_index(onlineAccounts, accountID));
+	 }
 	 buffer_write(buffer, buffer_u8, true);
      ds_map_replace(accountID, "socket", eventID);
 	 ds_list_add(onlineAccounts, accountID);
@@ -92,6 +99,7 @@ if(eventID==server){
    
   case chat:
    var accountID = function("searchList", accounts, "socket", eventID);
+   if(accountID == noone) return;
    var name = ds_map_find_value(accountID, "name");
    var message = buffer_read(rbuffer, buffer_string);
    function("messageAll", name + ">" + message, ds_map_find_value(accountID, "color"), false);
