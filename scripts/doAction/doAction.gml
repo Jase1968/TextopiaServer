@@ -5,15 +5,16 @@ var name = ds_map_find_value(accountID, "name");
 var response = ds_map_find_value(accountID, "response");
 if(response == noone){
 var doCommand = noone;
-var closestCommand = 0.9;
+//var closestCommand = 1;
 var tryCommands = ds_list_create();
 var key = ds_map_find_first(commands);
 var comp;
 for(var k = 0; k < ds_map_size(commands); k++){
  comp = function("compSentence",key, input, false);
- if(comp > closestCommand){
+ //if(comp > closestCommand){
+ if(string_lower(input) == key){
   doCommand = ds_map_find_value(commands, key);
-  closestCommand = comp;
+  //closestCommand = comp;
  }else if(comp>.6)
   ds_list_add(tryCommands, key);
  key = ds_map_find_next(commands, key);

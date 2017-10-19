@@ -20,6 +20,8 @@ if(eventID==server){
   case network_type_disconnect:
    var accountID = function("searchList", onlineAccounts, "socket", clientSocket);
    if(accountID != noone){
+	function("messageLocation", ds_map_find_value(accountID, "location"), ds_map_find_value(accountID, "name") + " has logged out.", c_gray);
+	function("messageSingle", accountID, "You have been disconnected. /logout or /exit.", c_red);
     ds_map_replace(accountID, "socket", noone);
     ds_map_replace(accountID, "response", noone);
     ds_list_delete(onlineAccounts, ds_list_find_index(onlineAccounts, accountID));
@@ -55,7 +57,8 @@ if(eventID==server){
    network_send_packet(eventID, buffer, buffer_tell(buffer));
    buffer_delete(buffer);
    if(successfulRegistry)
-    actions("act_chooseColor", accountID, initialize);
+    //function("messageLocation", ds_map_find_value(accountID, "location"), ds_map_find_value(accountID, "name") + " has joined the world.", c_white);
+	actions("act_chooseColor", accountID, initialize);
    break;
   
   case login:
@@ -89,12 +92,11 @@ if(eventID==server){
     network_send_packet(ds_map_find_value(accountID, "socket"),
   					  buffer, buffer_tell(buffer));
     buffer_delete(buffer);
+	function("messageLocation", ds_map_find_value(accountID, "location"), ds_map_find_value(accountID, "name") + " has logged in.", c_white);
 	if(function("hasNewMail", accountID, false, false)){
 	 function("messageSingle", accountID, "You've got mail!", c_yellow);
 	}
    }
-   //if(successfulLogin)
-   // actions("act_chooseColor", accountID, initialize);
    break;
    
   case chat:
@@ -102,11 +104,12 @@ if(eventID==server){
    if(accountID == noone) return;
    var name = ds_map_find_value(accountID, "name");
    var message = buffer_read(rbuffer, buffer_string);
-   function("messageAll", name + ">" + message, ds_map_find_value(accountID, "color"), false);
    if(string_char_at(message, 1) == "/"){
+    function("messageSingle", accountID, name + ">" + message, ds_map_find_value(accountID, "color"));
     doAction(accountID, string_copy(message, 2, string_length(message)));
+   }else{
+    function("messageLocation", ds_map_find_value(accountID, "location"), name + ">" + message, ds_map_find_value(accountID, "color"));
    }
-   break;
- 
+  break;
  }
 }

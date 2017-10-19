@@ -25,6 +25,7 @@ switch(argument0){ //the response type
   }else{
    function("sendLetter", accountID, friendID, "Want to be friends?");
    function("messageSingle", accountID, "Friend request sent via mail.", c_white);
+   ds_map_replace(accountID, "response", noone);
   }
  break;
  
@@ -47,7 +48,7 @@ switch(argument0){ //the response type
    function("messageSingle", accountID, "There is noone with that name.", c_yellow);
    ds_map_replace(accountID, "response", noone);
   }else{
-   function("messageSingle", accountID, "Write /message to " + input + " or /cancel.", c_yellow);
+   function("messageSingle", accountID, "Write /(your message) to " + input + " or /cancel.", c_yellow);
    ds_map_replace(accountID, "response", "writeMail;" + input);
   }
  break;
@@ -65,7 +66,7 @@ switch(argument0){ //the response type
     function("messageSingle", accountID, "Do you want to be friends with " + mailSplit[2] + "? Reply /Yes /No or /Cancel. You can never have too many friends!", c_yellow);
 	ds_map_replace(accountID, "response", "confirmFriendRequest;" + mailSplit[2]);
    }else{
-	function("messageSingle", accountID, "Write /reply to " + mailSplit[2] + " or /cancel.", c_yellow);
+	function("messageSingle", accountID, "Write /(your reply) to " + mailSplit[2] + " or /cancel.", c_yellow);
 	ds_map_replace(accountID, "response", "writeReplyMail;" + mailSplit[2]);
    }
   }else{

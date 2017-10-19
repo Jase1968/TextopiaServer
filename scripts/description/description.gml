@@ -4,7 +4,13 @@ switch(argument0){
   var accountID = argument1;
   var name = ds_map_find_value(accountID, "name");
   var location = ds_map_find_value(accountID, "location");
-  var sublocation = ds_map_find_value(accountID, "sublocation")
+  var locID = function("searchList", locations, "#", location);
+  var type = ds_map_find_value(locID, "type");
+  var owner = ds_map_find_value(locID, "owner");
+  var desc = ds_map_find_value(locID, "desc");
+  return "You are at " + desc;
+}
+  /*var sublocation = ds_map_find_value(accountID, "sublocation")
   if(location == "house"){
    if(sublocation == name)
     return "You are at your home. There is a television, sofa, computer, kitchen, bathroom, and bedroom here.";
