@@ -32,13 +32,10 @@ ds_map_add(commands, "check mail", "act_readMail");
 ds_map_add(commands, "read messages", "act_readMail");
 ds_map_add(commands, "check messages", "act_readMail");
 
-ds_map_add(commands, "go to the park", "act_goToPark");
-ds_map_add(commands, "go home", "act_goHome");
+// ds_map_add(commands, "go to the park", "act_goToPark");
+// ds_map_add(commands, "go home", "act_goHome");
 
 ds_map_add(commands, "eat", "act_eat");
-ds_map_add(commands, "cook", "act_cookSpag");
-ds_map_add(commands, "cook spaghetti", "act_cookSpag");
-ds_map_add(commands, "make spaghetti", "act_cookSpag");
 
 colors = ds_map_create();
 ds_map_add(colors, "aqua", c_aqua);

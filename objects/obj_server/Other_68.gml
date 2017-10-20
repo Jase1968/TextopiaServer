@@ -58,7 +58,7 @@ if(eventID==server){
    buffer_delete(buffer);
    if(successfulRegistry)
     //function("messageLocation", ds_map_find_value(accountID, "location"), ds_map_find_value(accountID, "name") + " has joined the world.", c_white);
-	actions("act_chooseColor", accountID, initialize);
+	actions("act_chooseColor", accountID, initialize, false);
    break;
   
   case login:

@@ -5,7 +5,7 @@ for(var a = 0; a < ds_list_size(onlineAccounts); a++){
  var timer = ds_map_find_value(accountID, "timer");
  var hunger = ds_map_find_value(accountID, "hunger");
  if(action != "none")
-  actions(action, accountID, timer);
+  actions(action, accountID, timer, false);
  if(timer > 0)
   ds_map_replace(accountID, "timer", timer - 1);
  else
