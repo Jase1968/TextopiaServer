@@ -24,17 +24,6 @@ itemList = ds_list_create();
 // 1 = 123213
 // [Location]
 // 0 = 0
-inventory = ds_list_create();
-ini_open("Lists.ini");
-for (var it = 0; it < foodCountMax; it++)
-{
-	// stores: food name and cooking durati	on
-	var foodList = ds_list_create();
-	ds_list_add(foodList, ini_read_real("FoodDuration", string(it), 1));
-	
-	ds_list_add(foodSearchList, foodList);
-}
-ini_close();
 
 // used for the server to serach through the list of available foods
 foodSearchList = ds_list_create();

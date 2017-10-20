@@ -19,4 +19,5 @@ ds_list_destroy(locations);
 ds_map_destroy(commands);
 ds_map_destroy(colors);
 ds_list_destroy(foodSearchList);
+ds_list_destroy(itemList);
 

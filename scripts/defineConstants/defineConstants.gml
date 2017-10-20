@@ -36,6 +36,7 @@ ds_map_add(commands, "check messages", "act_readMail");
 // ds_map_add(commands, "go home", "act_goHome");
 
 ds_map_add(commands, "eat", "act_eat");
+ds_map_add(commands, "cook (food)", "act_showRecipes");
 
 colors = ds_map_create();
 ds_map_add(colors, "aqua", c_aqua);

@@ -12,15 +12,15 @@ var comp;
 
 // test if the commmand is 
 // - cooking (example: /cook [argument])
-if (string_length(input) > 4)
-{
+//if (string_length(input) > 3)
+//{
 	var tempInput = string_lower(input);
 	
 	// check ifthe comparedWord is in the first position of the input
 	if (string_pos("cook", tempInput) == 1)
 	{
-
-		var restWord = string_copy(tempInput, string_length("cook")+1, string_length(tempInput) - string_length(compareWord));
+		var foodMatch = false;
+		var restWord = string_copy(tempInput, string_length("cook")+1, string_length(tempInput) - string_length("cook"));
 		
 		// and check if the name of the meal exists:
 		for (var it = 0; it < ds_list_size(foodSearchList); it++)
@@ -29,16 +29,21 @@ if (string_length(input) > 4)
 			if ( string_pos(string_lower(foodString), restWord) > 0)
 			{
 				actions("act_cook", accountID, initialize, ds_list_find_value(foodSearchList, it));
+				foodMatch = true;
+				break;
 			}
+		}
+		if(!foodMatch){
+		 for (var it = 0; it < ds_list_size(foodSearchList); it++){
+			var foodString = ds_list_find_value(ds_list_find_value(foodSearchList, it), 0);
+			function("messageSingle", accountID, "Try /cook " + foodString, c_yellow);
+		 }
 		}
 	}
 	else if (string_pos("go", tempInput) == 1 || string_pos("go to", tempInput) == 1)
 	{
 		
-	}
-	
-	
-}else{
+	}else{
 
 for(var k = 0; k < ds_map_size(commands); k++){
  comp = function("compSentence",key, input, false);
@@ -63,7 +68,9 @@ if(doCommand == noone){
 }
 
 ds_list_destroy(tryCommands);
-}}else{
+}
+//}
+}else{
  if(string_lower(input) == "cancel")
   ds_map_replace(accountID, "response", noone)
  else
