@@ -1,10 +1,12 @@
 
 var accountID = argument1;
 var timer = argument2;
+var addInput = argument3;
 
  var location = ds_map_find_value(accountID, "location");
  var locID = function("searchList", locations, "#", location);
-
+ 
+ 
 switch(argument0){
 
 case "act_lookAround":
@@ -141,7 +143,7 @@ switch(timer){
   if(action == "none")
    function("messageSingle", accountID, "You are idle.", c_yellow);
   else
-   function("messageSingle", accountID, actions(action, accountID, queary), c_yellow);
+   function("messageSingle", accountID, actions(action, accountID, queary, addInput), c_yellow);
   break;
 }
 break;
@@ -156,47 +158,27 @@ case "act_chooseColor":
  ds_map_replace(accountID, "response", "chooseColor");
 break;
 
-case "act_cookSpag":
+
+case "act_cook":
 
 var name = ds_map_find_value(accountID, "name");
 
 switch(timer){
  case initialize:
-  ds_map_replace(accountID, "action", "act_cookSpag");
-  ds_map_replace(accountID, "timer", 30);
+  ds_map_replace(accountID, "action", "act_cook");
+  ds_map_replace(accountID, "timer", ds_list_find_value(addInput, 1));
+
   break;
+ 
  case queary:
-  return "You are cooking spaghetti.";
+  return "You are cooking a " + ds_list_find_value(addInput, 0) + ".";
   break;
- case 30:
-  function("messageSingle", accountID, name + " is getting out the required ingredients.", c_white);
-  break;
- case 28:
-  function("messageSingle", accountID, name + " is heating up a pot of water.", c_white);
-  break;
- case 27:
-  function("messageSingle", accountID, name + " is heating up a pan of hamburger.", c_white);
-  break;
- case 24:
-  function("messageSingle", accountID, name + " is adding a handfull of spaghetti noodles and a pinch of salt to the boiling water.", c_white);
-  break;
- case 20:
-  function("messageSingle", accountID, name + " is draining the hamburger grease.", c_white);
-  break;
- case 19:
-  function("messageSingle", accountID, name + " is adding tomato sauce and seasoning to the hamburger.", c_white);
-  break;
- case 10:
-  function("messageSingle", accountID, name + " is straining the pasta.", c_white);
-  break;
- case 8:
-  function("messageSingle", accountID, name + " is combining the sauce with the noodles.", c_white);
-  break;
- case 7:
-  function("messageSingle", accountID, name + " is cleaning up the kitchen.", c_white);
+ case 1:
+  function("messageSingle", accountID, "Your meal is ready.", c_white);
   break;
  default:
   return false;
 }
 break;
+
 }
