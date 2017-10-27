@@ -37,6 +37,12 @@ ds_map_add(commands, "check messages", "act_readMail");
 
 ds_map_add(commands, "eat", "act_eat");
 ds_map_add(commands, "cook (food)", "act_showRecipes");
+ds_map_add(commands, "go to (location)", "act_showLocations");
+ds_map_add(commands, "go to (player)'s house", "act_showLocations");
+ds_map_add(commands, "logout", "act_logout");
+ds_map_add(commands, "exit", "act_quitGame");
+ds_map_add(commands, "windowed", "act_fullscreen");
+ds_map_add(commands, "fullscreen", "act_fullscreen");
 
 colors = ds_map_create();
 ds_map_add(colors, "aqua", c_aqua);

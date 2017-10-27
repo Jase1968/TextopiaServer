@@ -41,8 +41,32 @@ var comp;
 		}
 	}
 	else if (string_pos("go", tempInput) == 1 || string_pos("go to", tempInput) == 1)
-	{
-		
+	{	
+		var locationMatch = false;
+		//var restWord = string_replace(string_replace(tempInput, "go ", ""), "to ", "");
+		for(var l = 0; l < ds_list_size(locations); l++){
+		 var locID = ds_list_find_value(locations, l);
+		 var tag = ds_map_find_value(locID, "tag");
+		 if(string_pos(tag, input) > 0){
+			ds_map_replace(accountID, "location", tag);
+			//function("messageSingle", accountID, "You have gone to " + tag + ".", c_white);
+			actions("act_lookAround", accountID, initialize, false);
+			function("messageLocation", tag, ds_map_find_value(accountID, "name") + " arrived.", c_gray);
+			locationMatch = true;
+			break;
+		 }
+		}
+		if(!locationMatch){
+		 var friendsList = ds_map_find_value(accountID, "friendsList");
+		 for(var f = 0; f < ds_list_size(friendsList); f++){
+		  function("messageSingle", accountID, "Try /go to " + ds_list_find_value(friendsList, f) + "'s house", c_yellow);
+		 }
+		 for(var l = 0; l < ds_list_size(locations); l++){
+		  locID = ds_list_find_value(locations, l);
+		  if(ds_map_find_value(locID, "owner") == "public")
+		   function("messageSingle", accountID, "Try /go to " + ds_map_find_value(locID, "tag"), c_yellow);
+		 }
+		}
 	}else{
 
 for(var k = 0; k < ds_map_size(commands); k++){

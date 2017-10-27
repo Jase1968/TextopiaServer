@@ -3,25 +3,24 @@ var accountID = argument1;
 var timer = argument2;
 var addInput = argument3;
 
- var location = ds_map_find_value(accountID, "location");
- var locID = function("searchList", locations, "#", location);
+ var locTag = ds_map_find_value(accountID, "location");
+ var locID = function("searchList", locations, "tag", locTag);
  
  
 switch(argument0){
 
 case "act_lookAround":
- /*function("messageSingle", accountID, description("location", accountID), c_gray);
+ function("messageSingle", accountID, description("location", accountID), c_gray);
  for(var a = 0; a < ds_list_size(accounts); a++){
   var otherID = ds_list_find_value(accounts, a);
-  if(ds_map_find_value(otherID, "location") == ds_map_find_value(accountID, "location") &&
-     ds_map_find_value(otherID, "sublocation") == ds_map_find_value(accountID, "sublocation")){
+  if(ds_map_find_value(otherID, "location") == ds_map_find_value(accountID, "location")){
    if(ds_map_find_value(otherID, "socket") == noone){
     function("messageSingle", accountID, ds_map_find_value(otherID, "name") + " is here. <Offline>", c_dkgray);
    }else if(otherID != accountID){
     function("messageSingle", accountID, ds_map_find_value(otherID, "name") + " is here.", c_gray);
    }
   }
- }*/
+ }
 break;
 
 case "act_addFriend":
