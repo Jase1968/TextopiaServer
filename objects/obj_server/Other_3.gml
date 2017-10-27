@@ -20,4 +20,9 @@ ds_map_destroy(commands);
 ds_map_destroy(colors);
 ds_list_destroy(foodSearchList);
 ds_list_destroy(itemList);
-
+for(var n = 0; n < ds_list_size(npcs); n++){
+ var npc = ds_list_find_value(npcs, n);
+ ds_map_destroy(ds_map_find_value(npc, "quest"));
+ ds_map_destroy(npc)
+}
+ds_list_destroy(npcs);

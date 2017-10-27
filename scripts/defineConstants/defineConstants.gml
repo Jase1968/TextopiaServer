@@ -61,3 +61,19 @@ ds_map_add(colors, "silver", c_silver);
 ds_map_add(colors, "teal", c_teal);
 ds_map_add(colors, "white", c_white);
 ds_map_add(colors, "yellow", c_yellow);
+
+npcs = ds_list_create();
+var manfred = ds_map_create();
+ds_list_add(npcs, manfred);
+ds_map_add(manfred, "name", "Manfred");
+ds_map_add(manfred, "color", c_gray);
+ds_map_add(manfred, "loction", "the park");
+ds_map_add(manfred, "init", "Can you help me please? 'What do you want?', 'I can't right now', or 'Get lost!'");
+ds_map_add(manfred, "initTime", 600); //(10:00 am)
+var quest = ds_map_create();
+ds_map_add(quest, "hello", "Can you help me please? 'What do you want?', 'I can't right now', or 'Get lost!'");
+ds_map_add(quest, "what do you want?", "I need my kite that's stuck in that tree! 'I'll get it for you' or 'I don't think I can reach it'");
+ds_map_add(quest, "i can't right now", "Maybe someone else can help me then.");
+ds_map_add(quest, "get lost!", "Thanks for nothing!");
+ds_map_add(quest, "i'll get it for you", "Thank you so much!");
+ds_map_add(manfred, "quest", quest); 

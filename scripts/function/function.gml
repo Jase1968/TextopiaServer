@@ -222,7 +222,7 @@ break;
 
 //void loads the game
 case "loadAccounts":
-//function("loadNewLocations", false, false, false);
+
 ini_open("Accounts.ini");
 
 var numLocations = ini_read_real("Global", "numLocations", 0);

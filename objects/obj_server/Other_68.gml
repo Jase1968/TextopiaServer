@@ -109,6 +109,14 @@ if(eventID==server){
     doAction(accountID, string_copy(message, 2, string_length(message)));
    }else{
     function("messageLocation", ds_map_find_value(accountID, "location"), name + ">" + message, ds_map_find_value(accountID, "color"));
+    for(var n = 0; n < ds_list_size(npcs); n++){
+	 var npc = ds_list_find_value(npcs, n);
+	 var quest = ds_map_find_value(npc, "quest");
+	 if(ds_map_exists(quest, string_lower(message))){
+	  var response = ds_map_find_value(quest, string_lower(message));
+	  function("messageLocation", ds_map_find_value(accountID, "location"), ds_map_find_value(npc, "name") + ">" + response, ds_map_find_value(npc, "color"));
+	 }
+	}
    }
   break;
  }
